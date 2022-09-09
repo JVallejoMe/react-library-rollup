@@ -8,11 +8,16 @@ import { MonsterCall } from "../../../services";
 interface TableProps {
   onRowClick?: (data: Monster) => void;
   onSelect?: (data: Monster[]) => void;
-  searchName: string | '';
+  searchName: string | "";
   handleSearch: (data: string) => void;
 }
 
-const Table: React.FC<TableProps> = ({ onRowClick, onSelect, searchName, handleSearch }) => {
+const Table: React.FC<TableProps> = ({
+  onRowClick,
+  onSelect,
+  searchName,
+  handleSearch,
+}) => {
   const [tableData, setTableData] = useState<MonsterTable | null>(null);
 
   useEffect(() => {
@@ -24,14 +29,16 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect, searchName, handleS
     init();
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleSearch(event.target.value)
+  useEffect(() => {
     const selectedRowName = tableData!.tableRawData.find(
       (el) => el.name === searchName
     );
     if (selectedRowName) {
       onRowClick?.(selectedRowName);
     }
+  }, [searchName]);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleSearch(event.target.value);
   };
 
   const handleRowClick = (params: any) => {
