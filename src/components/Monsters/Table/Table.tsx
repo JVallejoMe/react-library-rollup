@@ -23,21 +23,18 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
     init();
   }, []);
 
-  useEffect(() => {
-    if (name) {
-      const selectedName = tableData!.tableRawData.find(
-        (el) => el.name === name
-      );
-      if (selectedName) {
-        return onRowClick?.(selectedName);
-      }
-    }
-  }, [setName]);
-
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
-
+  
+  useEffect(() => {
+    const selectedName = tableData!.tableRawData.find((el) => el.name === name);
+    if (selectedName) {
+      onRowClick?.(selectedName);
+    }
+  }, [setName]);
+  
   const handleRowClick = (params: any) => {
     const selectedRow = tableData!.tableRawData.find(
       (el) => +el.id === params.id
