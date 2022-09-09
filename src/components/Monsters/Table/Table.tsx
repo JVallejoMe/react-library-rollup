@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import TextField from "@mui/material/TextField";
 import TableSkeleton from "./Table.skeleton";
 import { Monster, MonsterTable } from "../../../models";
 import { MonsterCall } from "../../../services";
@@ -7,9 +8,11 @@ import { MonsterCall } from "../../../services";
 interface TableProps {
   onRowClick?: (data: Monster) => void;
   onSelect?: (data: Monster[]) => void;
+  searchName: string | '';
+  handleSearch: (data: string) => void;
 }
 
-const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
+const Table: React.FC<TableProps> = ({ onRowClick, onSelect, searchName, handleSearch }) => {
   const [tableData, setTableData] = useState<MonsterTable | null>(null);
 
   useEffect(() => {
@@ -20,6 +23,16 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
 
     init();
   }, []);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleSearch(event.target.value)
+    const selectedRowName = tableData!.tableRawData.find(
+      (el) => el.id === searchName
+    );
+    if (selectedRowName) {
+      onRowClick?.(selectedRowName);
+    }
+  };
 
   const handleRowClick = (params: any) => {
     const selectedRow = tableData!.tableRawData.find(
@@ -41,6 +54,12 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
 
   return tableData ? (
     <div style={{ width: "100%" }}>
+      <TextField
+        id="outlined-name"
+        label="Name"
+        value={searchName}
+        onChange={handleChange}
+      />
       <DataGrid
         disableSelectionOnClick={true}
         onSelectionModelChange={handleSelect}
