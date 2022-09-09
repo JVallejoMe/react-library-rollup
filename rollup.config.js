@@ -3,7 +3,9 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import { terser } from "rollup-plugin-terser";
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import babel from "rollup-plugin-babel";
+import { DEFAULT_EXTENSIONS } from "@babel/core";
 
 const packageJson = require("./package.json");
 
@@ -29,6 +31,9 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       terser(),
+      babel({
+        extensions: [...DEFAULT_EXTENSIONS, ".ts", ".tsx"],
+      }),
     ],
   },
   {
