@@ -27,7 +27,7 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect, searchName, handleS
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleSearch(event.target.value)
     const selectedRowName = tableData!.tableRawData.find(
-      (el) => el.id === searchName
+      (el) => el.name === searchName
     );
     if (selectedRowName) {
       onRowClick?.(selectedRowName);
