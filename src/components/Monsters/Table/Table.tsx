@@ -30,13 +30,16 @@ const Table: React.FC<TableProps> = ({
   }, []);
 
   useEffect(() => {
-    const selectedRowName = tableData!.tableRawData.find(
-      (el) => el.name === searchName
-    );
-    if (selectedRowName) {
-      onRowClick?.(selectedRowName);
+    if (tableData) {
+      const selectedRowName = tableData!.tableRawData.find(
+        (el) => el.name === searchName
+      );
+      if (selectedRowName) {
+        onRowClick?.(selectedRowName);
+      }
     }
   }, [searchName]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleSearch(event.target.value);
   };
