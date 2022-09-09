@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import TextField from "@mui/material/TextField";
 import TableSkeleton from "./Table.skeleton";
 import { Monster, MonsterTable } from "../../../models";
 import { MonsterCall } from "../../../services";
@@ -11,6 +12,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
   const [tableData, setTableData] = useState<MonsterTable | null>(null);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const init = async () => {
@@ -20,6 +22,21 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
 
     init();
   }, []);
+
+  useEffect(() => {
+    if (name) {
+      const selectedName = tableData!.tableRawData.find(
+        (el) => el.name === name
+      );
+      if (selectedName) {
+        return onRowClick?.(selectedName);
+      }
+    }
+  }, [setName]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   const handleRowClick = (params: any) => {
     const selectedRow = tableData!.tableRawData.find(
@@ -41,6 +58,12 @@ const Table: React.FC<TableProps> = ({ onRowClick, onSelect }) => {
 
   return tableData ? (
     <div style={{ width: "100%" }}>
+      <TextField
+        id="outlined-name"
+        label="Name"
+        value={name}
+        onChange={handleChange}
+      />
       <DataGrid
         disableSelectionOnClick={true}
         onSelectionModelChange={handleSelect}
