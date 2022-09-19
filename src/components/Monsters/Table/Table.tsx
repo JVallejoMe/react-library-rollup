@@ -4,7 +4,8 @@ import TextField from "@mui/material/TextField";
 import TableSkeleton from "./Table.skeleton";
 import { Monster, MonsterTable } from "../../../models";
 import { MonsterCall } from "../../../services";
-
+import { red } from "@mui/material/colors";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 interface TableProps {
   onRowClick?: (data: Monster) => void;
   onSelect?: (data: Monster[]) => void;
@@ -62,6 +63,14 @@ const Table: React.FC<TableProps> = ({
     onSelect?.(data);
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: red[500],
+      },
+    },
+  });
+
   return tableData ? (
     <div style={{ width: "100%" }}>
       <TextField
@@ -70,17 +79,19 @@ const Table: React.FC<TableProps> = ({
         value={searchName}
         onChange={handleChange}
       />
-      <DataGrid
-        disableSelectionOnClick={true}
-        onSelectionModelChange={handleSelect}
-        onRowClick={handleRowClick}
-        autoHeight={true}
-        rows={tableData.rows}
-        columns={tableData.columns}
-        pageSize={10}
-        rowsPerPageOptions={[5, 10]}
-        checkboxSelection
-      />
+      <ThemeProvider theme={theme}>
+        <DataGrid
+          disableSelectionOnClick={true}
+          onSelectionModelChange={handleSelect}
+          onRowClick={handleRowClick}
+          autoHeight={true}
+          rows={tableData.rows}
+          columns={tableData.columns}
+          pageSize={10}
+          rowsPerPageOptions={[5, 10]}
+          checkboxSelection
+        />
+      </ThemeProvider>
     </div>
   ) : (
     <TableSkeleton />

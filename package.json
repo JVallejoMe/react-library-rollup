@@ -1,6 +1,6 @@
 {
   "name": "@JVallejoMe/react-library-rollup",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "React Component Library with Rollup",
   "scripts": {
     "rollup": "rollup -c"
@@ -32,7 +32,7 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
+  "types": "module",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/JVallejoMe"
   }
